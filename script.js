@@ -20,10 +20,6 @@ const entriesFilter = document.getElementById('entries-filter');
 const table = document.getElementById('data-table');
 const tbody = table.querySelector('tbody');
 const thead = table.querySelector('thead tr');
-const totalDataElement = document.getElementById('total-data');
-const activeDataElement = document.getElementById('active-data');
-const pendingDataElement = document.getElementById('pending-data');
-const inactiveDataElement = document.getElementById('inactive-data');
 const tableInfo = document.getElementById('table-info');
 const pagination = document.getElementById('pagination');
 
@@ -77,7 +73,6 @@ function loadData() {
             originalData = data;
             currentData = [...data];
             
-            updateDashboardCards(data);
             renderTable();
             hideLoading();
         })
@@ -225,18 +220,6 @@ function renderPagination(totalPages = 1) {
         }
     });
     pagination.appendChild(nextBtn);
-}
-
-// Update dashboard cards
-function updateDashboardCards(data) {
-    totalDataElement.textContent = data.length;
-    // Mendukung variasi status (active, aktif, dsb)
-    const activeCount = data.filter(row => row.Status && ['active', 'aktif'].includes(row.Status.toLowerCase())).length;
-    const pendingCount = data.filter(row => row.Status && ['pending', 'menunggu'].includes(row.Status.toLowerCase())).length;
-    const inactiveCount = data.filter(row => row.Status && ['inactive', 'tidak aktif'].includes(row.Status.toLowerCase())).length;
-    activeDataElement.textContent = activeCount;
-    pendingDataElement.textContent = pendingCount;
-    inactiveDataElement.textContent = inactiveCount;
 }
 
 // Tampilkan loading
