@@ -348,17 +348,17 @@ tr:hover td {
     background-color: #f8f9fa;
 }
 
-.status-active {
+.status-active, .status-aktif {
     color: #2ecc71;
     font-weight: 500;
 }
 
-.status-pending {
+.status-pending, .status-menunggu {
     color: var(--warning);
     font-weight: 500;
 }
 
-.status-inactive {
+.status-inactive, .status-tidak-aktif {
     color: var(--danger);
     font-weight: 500;
 }
