@@ -121,6 +121,66 @@ nav ul li.active a {
     font-size: 14px;
 }
 
+/* ===== Top Navbar ===== */
+.top-navbar {
+    display: none;
+    background-color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--gray);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.nav-item i {
+    font-size: 14px;
+}
+
+.nav-item:hover {
+    color: var(--primary);
+    background-color: rgba(67, 97, 238, 0.1);
+}
+
+.nav-item.active {
+    color: var(--primary);
+    background-color: rgba(67, 97, 238, 0.1);
+    font-weight: 500;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.nav-user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav-user span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
 /* ===== Main Content ===== */
 .main-content {
     flex: 1;
@@ -476,6 +536,15 @@ tr:hover td {
 }
 
 @media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    
+    .top-navbar {
+        display: flex;
+        align-items: center;
+    }
+    
     .top-bar {
         flex-direction: column;
         gap: 15px;
