@@ -1,11 +1,20 @@
-// Contoh fungsi untuk menampilkan alert saat button diklik
-document.addEventListener('DOMContentLoaded', function() {
-    const button = document.createElement('button');
-    button.textContent = 'Klik Saya!';
-    button.style.marginTop = '20px';
-    button.addEventListener('click', function() {
-        alert('Anda telah mengklik tombol!');
-    });
+// Animasi tombol CTA
+document.getElementById('ctaButton').addEventListener('click', function() {
+    alert('Terima kasih telah mengklik!');
     
-    document.querySelector('.content').appendChild(button);
+    // Animasi (contoh: bounce)
+    this.classList.add('animate__animated', 'animate__bounce');
+    setTimeout(() => {
+        this.classList.remove('animate__animated', 'animate__bounce');
+    }, 1000);
+});
+
+// Efek scroll halus untuk semua link
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
 });
