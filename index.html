@@ -3,39 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Bank</title>
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <title>Data dari Spreadsheet</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <img src="images/logo.png" alt="Logo Bank" class="logo">
-        <h1>Data Bank</h1>
-    </header>
-    
-    <main>
-        <div class="table-container">
-            <table id="bank-data">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Bank</th>
-                        <th>Kode Bank</th>
-                        <th>Alamat</th>
-                        <th>Telepon</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data akan diisi oleh JavaScript -->
-                </tbody>
-            </table>
-        </div>
-    </main>
-    
-    <footer>
-        <p>&copy; 2023 Data Bank. All rights reserved.</p>
-    </footer>
-
+    <div class="container">
+        <h1>Data dari Google Spreadsheet</h1>
+        <div id="loading">Memuat data...</div>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <!-- Kolom akan ditambahkan otomatis oleh JavaScript -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data akan diisi oleh JavaScript -->
+            </tbody>
+        </table>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
