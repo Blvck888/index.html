@@ -55,6 +55,11 @@ function setupEventListeners() {
     modalOkBtn.addEventListener('click', () => {
         errorModal.style.display = 'none';
     });
+
+    // Export CSV
+    document.querySelector('.export-btn').addEventListener('click', () => {
+        exportToCSV();
+    });
 }
 
 // Memuat data dari spreadsheet
@@ -145,10 +150,13 @@ function renderTable() {
         headers.forEach(header => {
             const td = document.createElement('td');
             const value = row[header] || '-';
-            
-            // Format khusus untuk kolom status
+
+            // Format khusus untuk kolom status (baik "Status" atau variasi lain)
             if (header.toLowerCase().includes('status')) {
-                td.className = `status-${value.toLowerCase()}`;
+                const valLower = value.toLowerCase();
+                if (valLower === 'active' || valLower === 'aktif') td.className = 'status-active status-aktif';
+                else if (valLower === 'pending' || valLower === 'menunggu') td.className = 'status-pending status-menunggu';
+                else if (valLower === 'inactive' || valLower === 'tidak aktif') td.className = 'status-inactive status-tidak-aktif';
             }
             
             td.textContent = value;
@@ -164,7 +172,7 @@ function renderTable() {
 
 // Update info tabel
 function updateTableInfo() {
-    const start = (currentPage - 1) * entriesPerPage + 1;
+    const start = (currentPage - 1) * entriesPerPage + (currentData.length ? 1 : 0);
     const end = Math.min(currentPage * entriesPerPage, currentData.length);
     
     tableInfo.textContent = `Showing ${start} to ${end} of ${currentData.length} entries`;
@@ -191,11 +199,9 @@ function renderPagination(totalPages = 1) {
     const maxVisiblePages = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
     if (endPage - startPage + 1 < maxVisiblePages) {
         startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
-    
     for (let i = startPage; i <= endPage; i++) {
         const pageBtn = document.createElement('button');
         pageBtn.className = 'pagination-btn';
@@ -207,7 +213,6 @@ function renderPagination(totalPages = 1) {
         });
         pagination.appendChild(pageBtn);
     }
-    
     // Tombol next
     const nextBtn = document.createElement('button');
     nextBtn.className = 'pagination-btn';
@@ -225,12 +230,10 @@ function renderPagination(totalPages = 1) {
 // Update dashboard cards
 function updateDashboardCards(data) {
     totalDataElement.textContent = data.length;
-    
-    // Hitung status (contoh: asumsi ada kolom 'Status')
-    const activeCount = data.filter(row => row.Status && row.Status.toLowerCase() === 'active').length;
-    const pendingCount = data.filter(row => row.Status && row.Status.toLowerCase() === 'pending').length;
-    const inactiveCount = data.filter(row => row.Status && row.Status.toLowerCase() === 'inactive').length;
-    
+    // Mendukung variasi status (active, aktif, dsb)
+    const activeCount = data.filter(row => row.Status && ['active', 'aktif'].includes(row.Status.toLowerCase())).length;
+    const pendingCount = data.filter(row => row.Status && ['pending', 'menunggu'].includes(row.Status.toLowerCase())).length;
+    const inactiveCount = data.filter(row => row.Status && ['inactive', 'tidak aktif'].includes(row.Status.toLowerCase())).length;
     activeDataElement.textContent = activeCount;
     pendingDataElement.textContent = pendingCount;
     inactiveDataElement.textContent = inactiveCount;
@@ -250,4 +253,22 @@ function hideLoading() {
 function showError(message) {
     errorMessage.textContent = message;
     errorModal.style.display = 'flex';
+}
+
+// Export data ke CSV
+function exportToCSV() {
+    if (!currentData.length) {
+        showError('Tidak ada data untuk diekspor.');
+        return;
+    }
+    const headers = Object.keys(currentData[0]);
+    const rows = currentData.map(row => headers.map(h => `"${(row[h]||'').replace(/"/g, '""')}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qris-data.csv';
+    a.click();
+    URL.revokeObjectURL(url);
 }
