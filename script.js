@@ -3,115 +3,251 @@ const SPREADSHEET_ID = '1zc2OY8FSfAnyGDIz1DUSjs0hYqFd4jGt0g06Bw38HSE';
 const SHEET_NAME = 'All QRIS';
 const API_URL = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
 
-// Elemen DOM
-const loadingElement = document.getElementById('loading');
-const errorElement = document.getElementById('error-message');
+// Variabel Global
+let originalData = [];
+let currentData = [];
+let currentPage = 1;
+let entriesPerPage = 10;
+
+// DOM Elements
+const loadingOverlay = document.getElementById('loading-overlay');
+const errorModal = document.getElementById('error-modal');
+const errorMessage = document.getElementById('error-message');
+const modalOkBtn = document.getElementById('modal-ok-btn');
+const refreshBtn = document.getElementById('refresh-btn');
 const searchInput = document.getElementById('search-input');
+const entriesFilter = document.getElementById('entries-filter');
 const table = document.getElementById('data-table');
 const tbody = table.querySelector('tbody');
 const thead = table.querySelector('thead tr');
+const totalDataElement = document.getElementById('total-data');
+const activeDataElement = document.getElementById('active-data');
+const pendingDataElement = document.getElementById('pending-data');
+const inactiveDataElement = document.getElementById('inactive-data');
+const tableInfo = document.getElementById('table-info');
+const pagination = document.getElementById('pagination');
 
-// Variabel untuk menyimpan data asli
-let originalData = [];
+// Inisialisasi
+document.addEventListener('DOMContentLoaded', () => {
+    loadData();
+    setupEventListeners();
+});
 
-// Fungsi untuk memuat data
+// Setup Event Listeners
+function setupEventListeners() {
+    // Refresh data
+    refreshBtn.addEventListener('click', loadData);
+    
+    // Pencarian
+    searchInput.addEventListener('input', () => {
+        currentPage = 1;
+        filterData();
+    });
+    
+    // Filter jumlah entri
+    entriesFilter.addEventListener('change', () => {
+        entriesPerPage = parseInt(entriesFilter.value);
+        currentPage = 1;
+        renderTable();
+    });
+    
+    // Modal error
+    modalOkBtn.addEventListener('click', () => {
+        errorModal.style.display = 'none';
+    });
+}
+
+// Memuat data dari spreadsheet
 function loadData() {
-    loadingElement.style.display = 'block';
-    errorElement.style.display = 'none';
-
+    showLoading();
+    
     fetch(API_URL)
         .then(response => {
-            if (!response.ok) throw new Error(`Gagal mengambil data. Status: ${response.status}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             return response.json();
         })
         .then(data => {
             if (!data || data.length === 0) throw new Error('Tidak ada data di sheet "All QRIS"');
             
-            originalData = data; // Simpan data asli untuk pencarian
-            renderTable(data);
-            loadingElement.style.display = 'none';
+            originalData = data;
+            currentData = [...data];
+            
+            updateDashboardCards(data);
+            renderTable();
+            hideLoading();
         })
         .catch(error => {
             console.error('Error:', error);
-            loadingElement.style.display = 'none';
-            showError(error);
+            showError(error.message);
+            hideLoading();
         });
 }
 
-// Fungsi untuk render tabel
-function renderTable(data) {
+// Filter data berdasarkan pencarian
+function filterData() {
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    if (!searchTerm) {
+        currentData = [...originalData];
+    } else {
+        currentData = originalData.filter(row => {
+            return Object.values(row).some(
+                value => value && value.toString().toLowerCase().includes(searchTerm)
+            );
+        });
+    }
+    
+    currentPage = 1;
+    renderTable();
+}
+
+// Render tabel dengan pagination
+function renderTable() {
     // Kosongkan tabel
     thead.innerHTML = '<th>No</th>';
     tbody.innerHTML = '';
-
-    // Ambil header dari kolom pertama data
-    const headers = Object.keys(data[0]);
-    if (headers.length === 0) {
-        throw new Error('Format header tidak valid');
+    
+    if (currentData.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="100" style="text-align: center;">Tidak ada data yang cocok</td>`;
+        tbody.appendChild(tr);
+        updateTableInfo();
+        renderPagination();
+        return;
     }
-
+    
+    // Ambil headers dari data pertama
+    const headers = Object.keys(currentData[0]);
+    
     // Buat header tabel
-    headers.forEach((header, index) => {
+    headers.forEach(header => {
         const th = document.createElement('th');
         th.textContent = header;
-        if (index === 0) th.classList.add('primary-header');
         thead.appendChild(th);
     });
-
-    // Isi data ke tabel
-    data.forEach((row, rowIndex) => {
+    
+    // Hitung pagination
+    const totalPages = Math.ceil(currentData.length / entriesPerPage);
+    const startIndex = (currentPage - 1) * entriesPerPage;
+    const endIndex = Math.min(startIndex + entriesPerPage, currentData.length);
+    const pageData = currentData.slice(startIndex, endIndex);
+    
+    // Isi data
+    pageData.forEach((row, index) => {
         const tr = document.createElement('tr');
         
         // Nomor urut
         const tdNo = document.createElement('td');
-        tdNo.textContent = rowIndex + 1;
+        tdNo.textContent = startIndex + index + 1;
         tr.appendChild(tdNo);
-
-        // Isi data per kolom
-        headers.forEach((header, colIndex) => {
+        
+        // Data lainnya
+        headers.forEach(header => {
             const td = document.createElement('td');
-            td.textContent = row[header] || '-';
-            if (colIndex === 0) td.classList.add('primary-data');
+            const value = row[header] || '-';
+            
+            // Format khusus untuk kolom status
+            if (header.toLowerCase().includes('status')) {
+                td.className = `status-${value.toLowerCase()}`;
+            }
+            
+            td.textContent = value;
             tr.appendChild(td);
         });
-
+        
         tbody.appendChild(tr);
     });
+    
+    updateTableInfo();
+    renderPagination(totalPages);
 }
 
-// Fungsi untuk menampilkan error
-function showError(error) {
-    errorElement.innerHTML = `
-        <div class="error-icon">!</div>
-        <div>
-            <strong>Gagal memuat data</strong><br>
-            ${error.message}<br>
-            <small>Pastikan sheet "${SHEET_NAME}" sudah dibagikan secara publik</small>
-        </div>
-    `;
-    errorElement.style.display = 'flex';
+// Update info tabel
+function updateTableInfo() {
+    const start = (currentPage - 1) * entriesPerPage + 1;
+    const end = Math.min(currentPage * entriesPerPage, currentData.length);
+    
+    tableInfo.textContent = `Showing ${start} to ${end} of ${currentData.length} entries`;
 }
 
-// Fungsi untuk pencarian
-function handleSearch() {
-    const searchTerm = searchInput.value.toLowerCase();
-    if (!searchTerm) {
-        renderTable(originalData);
-        return;
-    }
-
-    const filteredData = originalData.filter(row => {
-        return Object.values(row).some(
-            value => value && value.toString().toLowerCase().includes(searchTerm)
-        );
+// Render pagination
+function renderPagination(totalPages = 1) {
+    pagination.innerHTML = '';
+    
+    // Tombol previous
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'pagination-btn';
+    prevBtn.innerHTML = '<i class="fas fa-angle-left"></i>';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderTable();
+        }
     });
-
-    renderTable(filteredData);
+    pagination.appendChild(prevBtn);
+    
+    // Tombol nomor halaman
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.className = 'pagination-btn';
+        if (i === currentPage) pageBtn.classList.add('active');
+        pageBtn.textContent = i;
+        pageBtn.addEventListener('click', () => {
+            currentPage = i;
+            renderTable();
+        });
+        pagination.appendChild(pageBtn);
+    }
+    
+    // Tombol next
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'pagination-btn';
+    nextBtn.innerHTML = '<i class="fas fa-angle-right"></i>';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderTable();
+        }
+    });
+    pagination.appendChild(nextBtn);
 }
 
-// Event Listeners
-document.addEventListener('DOMContentLoaded', loadData);
-searchInput.addEventListener('input', handleSearch);
+// Update dashboard cards
+function updateDashboardCards(data) {
+    totalDataElement.textContent = data.length;
+    
+    // Hitung status (contoh: asumsi ada kolom 'Status')
+    const activeCount = data.filter(row => row.Status && row.Status.toLowerCase() === 'active').length;
+    const pendingCount = data.filter(row => row.Status && row.Status.toLowerCase() === 'pending').length;
+    const inactiveCount = data.filter(row => row.Status && row.Status.toLowerCase() === 'inactive').length;
+    
+    activeDataElement.textContent = activeCount;
+    pendingDataElement.textContent = pendingCount;
+    inactiveDataElement.textContent = inactiveCount;
+}
 
-// (Opsional) Auto-refresh setiap 1 menit
-// setInterval(loadData, 60000);
+// Tampilkan loading
+function showLoading() {
+    loadingOverlay.style.display = 'flex';
+}
+
+// Sembunyikan loading
+function hideLoading() {
+    loadingOverlay.style.display = 'none';
+}
+
+// Tampilkan error modal
+function showError(message) {
+    errorMessage.textContent = message;
+    errorModal.style.display = 'flex';
+}
