@@ -1,59 +1,53 @@
-// Google Sheets ID dan nama sheet
-const SHEET_ID = '1zc2OY8FSfAnyGDIz1DUSjs0hYqFd4jGt0g06Bw38HSE';
-const SHEET_NAME = 'Data Bank';
+// Ganti URL dengan link publik spreadsheet Anda dalam format CSV
+const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/[1zc2OY8FSfAnyGDIz1DUSjs0hYqFd4jGt0g06Bw38HSE]/pub?output=csv';
 
-// Fungsi untuk memuat data dari Google Sheets
-async function loadBankData() {
-    try {
-        // Menggunakan Google Sheets API v4
-        const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=YOUR_API_KEY`);
-        
-        if (!response.ok) {
-            throw new Error('Gagal mengambil data');
-        }
-        
-        const data = await response.json();
-        displayData(data.values);
-    } catch (error) {
-        console.error('Error:', error);
-        // Fallback: Jika API tidak bekerja, gunakan data statis atau alternatif lain
-        displayFallbackData();
-    }
-}
-
-// Fungsi untuk menampilkan data ke tabel
-function displayData(rows) {
-    const tableBody = document.querySelector('#bank-data tbody');
-    
-    // Lewati header (baris pertama)
-    for (let i = 1; i < rows.length; i++) {
-        const row = rows[i];
-        const tr = document.createElement('tr');
-        
-        // Asumsikan struktur kolom: No, Nama Bank, Kode Bank, Alamat, Telepon
-        tr.innerHTML = `
-            <td>${row[0] || ''}</td>
-            <td>${row[1] || ''}</td>
-            <td>${row[2] || ''}</td>
-            <td>${row[3] || ''}</td>
-            <td>${row[4] || ''}</td>
-        `;
-        
-        tableBody.appendChild(tr);
-    }
-}
-
-// Fungsi fallback jika API tidak bekerja
-function displayFallbackData() {
-    const tableBody = document.querySelector('#bank-data tbody');
-    tableBody.innerHTML = `
-        <tr>
-            <td colspan="5" style="text-align: center; color: red;">
-                Gagal memuat data. Silakan coba lagi nanti atau hubungi administrator.
-            </td>
-        </tr>
-    `;
-}
-
-// Panggil fungsi untuk memuat data ketika halaman selesai dimuat
-document.addEventListener('DOMContentLoaded', loadBankData);
+document.addEventListener('DOMContentLoaded', function() {
+    fetch(SPREADSHEET_URL)
+        .then(response => response.text())
+        .then(data => {
+            const loadingElement = document.getElementById('loading');
+            loadingElement.style.display = 'none';
+            
+            const table = document.getElementById('data-table');
+            const tbody = table.querySelector('tbody');
+            const thead = table.querySelector('thead tr');
+            
+            // Parse data CSV
+            const rows = data.split('\n');
+            const headers = rows[0].split(',');
+            
+            // Buat header tabel
+            headers.forEach((header, index) => {
+                if (index === 0) return; // Skip kolom No yang sudah ada
+                const th = document.createElement('th');
+                th.textContent = header.trim();
+                thead.appendChild(th);
+            });
+            
+            // Isi data ke tabel
+            for (let i = 1; i < rows.length; i++) {
+                if (!rows[i]) continue;
+                
+                const cells = rows[i].split(',');
+                const tr = document.createElement('tr');
+                
+                // Tambah nomor urut
+                const tdNo = document.createElement('td');
+                tdNo.textContent = i;
+                tr.appendChild(tdNo);
+                
+                // Tambah data lainnya
+                for (let j = 0; j < cells.length; j++) {
+                    const td = document.createElement('td');
+                    td.textContent = cells[j].trim();
+                    tr.appendChild(td);
+                }
+                
+                tbody.appendChild(tr);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('loading').textContent = 'Gagal memuat data. Silakan coba lagi.';
+        });
+});
