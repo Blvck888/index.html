@@ -65,11 +65,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Initialize AOS animation
-AOS.init({
-    duration: 800,
-    easing: 'ease-in-out',
-    once: true,
-    offset: 120
+document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 120
+    });
 });
 
 // Form submission
@@ -106,10 +108,11 @@ if (contactForm) {
     });
 }
 
-// Logo error fallback
-document.querySelectorAll('img[alt="Logo"]').forEach(img => {
+// Image error handling
+document.querySelectorAll('img').forEach(img => {
     img.addEventListener('error', function() {
-        this.src = 'https://via.placeholder.com/150x50?text=LOGO';
-        this.alt = 'Logo Placeholder';
+        const placeholder = this.getAttribute('data-placeholder') || 'https://via.placeholder.com/300x200?text=Image+Not+Found';
+        this.src = placeholder;
+        this.alt = 'Placeholder Image';
     });
 });
