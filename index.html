@@ -3,24 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data dari Spreadsheet</title>
+    <title>Data All QRIS</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Data dari Google Spreadsheet</h1>
-        <div id="loading">Memuat data...</div>
+        <h1>Data All QRIS</h1>
+        
+        <!-- Pencarian -->
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Cari data...">
+        </div>
+        
+        <!-- Loading & Error -->
+        <div id="loading">
+            <div class="spinner"></div> Memuat data QRIS...
+        </div>
         <div id="error-message" class="error"></div>
-        <table id="data-table">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <!-- Kolom akan ditambahkan otomatis -->
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        
+        <!-- Tabel Data -->
+        <div class="table-container">
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <!-- Kolom lain akan di-generate otomatis -->
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
