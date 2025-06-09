@@ -12,6 +12,7 @@ body {
     color: var(--dark);
     overflow-x: hidden;
     position: relative;
+    line-height: 1.6;
 }
 
 /* Preloader */
@@ -26,6 +27,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    transition: opacity 0.5s ease;
 }
 
 /* Navbar */
@@ -52,9 +54,9 @@ body {
 
 /* Hero Section */
 .hero-section {
-    padding: 120px 0 80px;
+    padding: 150px 0 100px;
     background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), 
-                url('https://cdn.areabermain.club/assets/cdn/az6/2025/04/01/20250401/5dc9d083e18085eef7c0cd7fcf52bd46/linetogel-bg-new.jpg') no-repeat center center;
+                url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80') no-repeat center center;
     background-size: cover;
     color: white;
     position: relative;
@@ -83,6 +85,7 @@ body {
     margin-bottom: 15px;
     position: relative;
     display: inline-block;
+    color: var(--dark);
 }
 
 .section-title::after {
@@ -98,6 +101,7 @@ body {
 .section-subtitle {
     color: var(--secondary);
     margin-bottom: 30px;
+    font-size: 1.1rem;
 }
 
 /* Feature Cards */
@@ -106,11 +110,12 @@ body {
     border-radius: 10px;
     transition: all 0.3s ease;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 .feature-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
 .feature-icon {
@@ -124,21 +129,32 @@ body {
     justify-content: center;
     color: var(--primary);
     font-size: 30px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    background-color: var(--primary);
+    color: white;
 }
 
 /* About Section */
 .about-list {
     list-style: none;
     padding: 0;
+    margin-top: 20px;
 }
 
 .about-list li {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 30px;
 }
 
 .about-list i {
     color: var(--primary);
-    margin-right: 10px;
+    position: absolute;
+    left: 0;
+    top: 5px;
 }
 
 /* Contact Form */
@@ -146,6 +162,7 @@ body {
     padding: 12px 15px;
     border-radius: 5px;
     border: 1px solid #ddd;
+    margin-bottom: 15px;
 }
 
 .contact-form .form-control:focus {
@@ -154,6 +171,15 @@ body {
 }
 
 /* Footer */
+.footer-brand {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
 .footer-brand img {
     transition: all 0.3s ease;
 }
@@ -167,6 +193,7 @@ body {
     margin-bottom: 20px;
     position: relative;
     padding-bottom: 10px;
+    color: white;
 }
 
 .footer-heading::after {
@@ -192,11 +219,12 @@ body {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: all 0.3s ease;
+    display: inline-block;
 }
 
 .footer-links a:hover {
     color: white;
-    padding-left: 5px;
+    transform: translateX(5px);
 }
 
 .footer-contact {
@@ -205,14 +233,22 @@ body {
 }
 
 .footer-contact li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .footer-contact i {
     width: 20px;
     color: var(--primary);
+    margin-top: 3px;
+    margin-right: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .social-icons a {
@@ -224,7 +260,6 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     color: white;
-    margin-right: 10px;
     transition: all 0.3s ease;
 }
 
@@ -260,12 +295,13 @@ body {
 
 .back-to-top:hover {
     background-color: var(--dark);
+    transform: translateY(-5px);
 }
 
 /* Responsive Adjustments */
 @media (max-width: 991.98px) {
     .hero-section {
-        padding: 100px 0 60px;
+        padding: 120px 0 80px;
         text-align: center;
     }
     
@@ -290,5 +326,25 @@ body {
     
     .feature-card {
         margin-bottom: 20px;
+    }
+    
+    .hero-section {
+        padding: 100px 0 60px;
+    }
+    
+    .footer-brand {
+        justify-content: center;
+    }
+    
+    .footer-links, .footer-contact {
+        text-align: center;
+    }
+    
+    .footer-links li, .footer-contact li {
+        justify-content: center;
+    }
+    
+    .social-icons {
+        justify-content: center;
     }
 }
