@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Profesional | Nama Brand</title>
+    <title>Portofolio Pribadi | Nama Anda</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -32,11 +32,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="https://i.ibb.co/0jQ7YHx/logo.png" 
-                     alt="Logo" 
-                     width="40" 
-                     height="40"
-                     class="me-2"> Nama Brand
+                <span class="brand-icon"><i class="fas fa-user"></i></span> Nama Anda
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -47,16 +43,19 @@
                         <a class="nav-link active" href="#home">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#features">Fitur</a>
+                        <a class="nav-link" href="#about">Tentang Saya</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">Tentang</a>
+                        <a class="nav-link" href="#skills">Keahlian</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#portfolio">Portofolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Kontak</a>
                     </li>
                 </ul>
-                <a href="#contact" class="btn btn-primary ms-lg-3">Mulai Sekarang</a>
+                <a href="#contact" class="btn btn-outline-light ms-lg-3"><i class="fas fa-paper-plane me-2"></i>Hubungi Saya</a>
             </div>
         </div>
     </nav>
@@ -66,56 +65,21 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h1 class="display-4 fw-bold mb-4">Solusi Digital untuk Bisnis Anda</h1>
-                    <p class="lead mb-4">Tingkatkan produktivitas dengan platform kami yang dirancang khusus untuk kebutuhan modern.</p>
+                    <h6 class="text-primary mb-3">Halo, Saya</h6>
+                    <h1 class="display-4 fw-bold mb-4">Nama Anda</h1>
+                    <h3 class="mb-4">Profesi/Spesialisasi Anda</h3>
+                    <p class="lead mb-4">Deskripsi singkat tentang diri Anda dan apa yang Anda lakukan.</p>
                     <div class="d-flex gap-3">
-                        <a href="#contact" class="btn btn-primary btn-lg px-4">Mulai Gratis</a>
-                        <a href="#features" class="btn btn-outline-light btn-lg px-4">Pelajari Lebih</a>
+                        <a href="#portfolio" class="btn btn-primary btn-lg px-4"><i class="fas fa-briefcase me-2"></i>Portofolio</a>
+                        <a href="#contact" class="btn btn-outline-light btn-lg px-4"><i class="fas fa-download me-2"></i>Download CV</a>
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
-                    <img src="https://i.ibb.co/0jQ7YHx/logo.png" 
-                         alt="Hero Image" 
-                         class="img-fluid rounded shadow"
-                         width="300">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Fitur Unggulan</h2>
-                <p class="section-subtitle">Temukan apa yang membuat kami berbeda</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card p-4 text-center h-100">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3>Perform Tinggi</h3>
-                        <p>Optimasi untuk kecepatan maksimal dengan teknologi terbaru.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card p-4 text-center h-100">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Keamanan Terjamin</h3>
-                        <p>Proteksi data dengan enkripsi tingkat enterprise.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card p-4 text-center h-100">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                        <h3>Integrasi Mudah</h3>
-                        <p>Kompatibel dengan berbagai platform populer.</p>
+                    <div class="profile-image-wrapper">
+                        <img src="https://via.placeholder.com/400x500" 
+                             alt="Foto Profil" 
+                             class="img-fluid rounded shadow profile-image">
+                        <div class="image-border"></div>
                     </div>
                 </div>
             </div>
@@ -127,20 +91,141 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-                         alt="About Us" 
-                         class="img-fluid rounded shadow">
+                    <img src="https://via.placeholder.com/500x600" 
+                         alt="Tentang Saya" 
+                         class="img-fluid rounded shadow about-image">
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
-                    <h2 class="section-title">Tentang Kami</h2>
-                    <p>Kami adalah tim profesional yang berdedikasi untuk menyediakan solusi digital terbaik bagi bisnis Anda. Dengan pengalaman lebih dari 10 tahun di industri ini, kami memahami kebutuhan pasar dan selalu berinovasi.</p>
-                    <ul class="about-list">
-                        <li><i class="fas fa-check-circle"></i> Tim berpengalaman</li>
-                        <li><i class="fas fa-check-circle"></i> Teknologi terkini</li>
-                        <li><i class="fas fa-check-circle"></i> Dukungan 24/7</li>
-                    </ul>
-                    <a href="#" class="btn btn-outline-primary">Baca Selengkapnya</a>
+                    <h2 class="section-title">Tentang <span class="text-primary">Saya</span></h2>
+                    <p class="mb-4">Deskripsi lebih detail tentang diri Anda, latar belakang, dan passion Anda.</p>
+                    
+                    <div class="about-details">
+                        <div class="detail-item">
+                            <h5><i class="fas fa-user-tie text-primary me-2"></i> Nama Lengkap</h5>
+                            <p>Nama Lengkap Anda</p>
+                        </div>
+                        <div class="detail-item">
+                            <h5><i class="fas fa-birthday-cake text-primary me-2"></i> Umur</h5>
+                            <p>XX Tahun</p>
+                        </div>
+                        <div class="detail-item">
+                            <h5><i class="fas fa-map-marker-alt text-primary me-2"></i> Lokasi</h5>
+                            <p>Kota, Negara</p>
+                        </div>
+                        <div class="detail-item">
+                            <h5><i class="fas fa-envelope text-primary me-2"></i> Email</h5>
+                            <p>email@anda.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links mt-4">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">Keahlian <span class="text-primary">Saya</span></h2>
+                <p class="section-subtitle">Kemampuan dan keterampilan yang saya kuasai</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <h5>Web Development</h5>
+                            <span>90%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <h5>UI/UX Design</h5>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <h5>Graphic Design</h5>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <h5>Photography</h5>
+                            <span>70%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">Portofolio <span class="text-primary">Saya</span></h2>
+                <p class="section-subtitle">Beberapa proyek yang telah saya kerjakan</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/400x300" alt="Proyek 1" class="img-fluid">
+                        <div class="portfolio-overlay">
+                            <h5>Judul Proyek 1</h5>
+                            <p>Deskripsi singkat</p>
+                            <a href="#" class="btn btn-sm btn-primary">Lihat Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/400x300" alt="Proyek 2" class="img-fluid">
+                        <div class="portfolio-overlay">
+                            <h5>Judul Proyek 2</h5>
+                            <p>Deskripsi singkat</p>
+                            <a href="#" class="btn btn-sm btn-primary">Lihat Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/400x300" alt="Proyek 3" class="img-fluid">
+                        <div class="portfolio-overlay">
+                            <h5>Judul Proyek 3</h5>
+                            <p>Deskripsi singkat</p>
+                            <a href="#" class="btn btn-sm btn-primary">Lihat Detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="#" class="btn btn-outline-primary">Lihat Semua Proyek</a>
             </div>
         </div>
     </section>
@@ -149,8 +234,8 @@
     <section id="contact" class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Hubungi Kami</h2>
-                <p class="section-subtitle">Kami siap membantu Anda</p>
+                <h2 class="section-title">Hubungi <span class="text-primary">Saya</span></h2>
+                <p class="section-subtitle">Silakan hubungi saya melalui form berikut</p>
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-8" data-aos="fade-up">
@@ -169,7 +254,7 @@
                                 <textarea class="form-control" rows="5" placeholder="Pesan Anda" required></textarea>
                             </div>
                             <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary px-4 py-2">Kirim Pesan</button>
+                                <button type="submit" class="btn btn-primary px-4 py-2"><i class="fas fa-paper-plane me-2"></i>Kirim Pesan</button>
                             </div>
                         </div>
                     </form>
@@ -182,56 +267,45 @@
     <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
+                <div class="col-lg-6 mb-4 mb-lg-0">
                     <h3 class="footer-brand mb-3">
-                        <img src="https://i.ibb.co/0jQ7YHx/logo.png" 
-                             alt="Logo" 
-                             width="30" 
-                             height="30"
-                             class="me-2"> Nama Brand
+                        <span class="brand-icon"><i class="fas fa-user"></i></span> Nama Anda
                     </h3>
-                    <p>Solusi digital inovatif untuk transformasi bisnis Anda.</p>
+                    <p>Deskripsi singkat tentang diri Anda dan apa yang Anda tawarkan.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h4 class="footer-heading">Tautan</h4>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                    <h4 class="footer-heading">Tautan Cepat</h4>
                     <ul class="footer-links">
                         <li><a href="#home">Beranda</a></li>
-                        <li><a href="#features">Fitur</a></li>
-                        <li><a href="#about">Tentang</a></li>
+                        <li><a href="#about">Tentang Saya</a></li>
+                        <li><a href="#skills">Keahlian</a></li>
+                        <li><a href="#portfolio">Portofolio</a></li>
                         <li><a href="#contact">Kontak</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
-                    <h4 class="footer-heading">Layanan</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Web Development</a></li>
-                        <li><a href="#">Mobile Apps</a></li>
-                        <li><a href="#">UI/UX Design</a></li>
-                        <li><a href="#">Digital Marketing</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-4">
                     <h4 class="footer-heading">Kontak</h4>
                     <ul class="footer-contact">
-                        <li><i class="fas fa-map-marker-alt me-2"></i> Jakarta, Indonesia</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Kota, Negara</li>
                         <li><i class="fas fa-phone-alt me-2"></i> +62 123 4567 890</li>
-                        <li><i class="fas fa-envelope me-2"></i> info@brand.com</li>
+                        <li><i class="fas fa-envelope me-2"></i> email@anda.com</li>
                     </ul>
                 </div>
             </div>
             <hr class="my-4">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0">&copy; 2023 Nama Brand. All rights reserved.</p>
+                    <p class="mb-0">&copy; 2023 Nama Anda. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <p class="mb-0">Designed with <i class="fas fa-heart text-danger"></i> by Tim</p>
+                    <p class="mb-0">Dibuat dengan <i class="fas fa-heart text-danger"></i> oleh Anda</p>
                 </div>
             </div>
         </div>
