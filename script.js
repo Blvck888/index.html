@@ -1,129 +1,59 @@
-// Preloader
-document.addEventListener('DOMContentLoaded', function() {
-    const preloader = document.querySelector('.preloader');
-    
-    // Simulate loading delay
-    setTimeout(function() {
-        preloader.style.opacity = '0';
-        setTimeout(function() {
-            preloader.style.display = 'none';
-        }, 500);
-    }, 1000);
-});
+// Google Sheets ID dan nama sheet
+const SHEET_ID = '1zc2OY8FSfAnyGDIz1DUSjs0hYqFd4jGt0g06Bw38HSE';
+const SHEET_NAME = 'Data Bank';
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
-
-// Back to top button
-const backToTop = document.getElementById('backToTop');
-window.addEventListener('scroll', function() {
-    if (window.scrollY > 300) {
-        backToTop.classList.add('active');
-    } else {
-        backToTop.classList.remove('active');
-    }
-});
-
-backToTop.addEventListener('click', function(e) {
-    e.preventDefault();
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-// Smooth scrolling for all links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
+// Fungsi untuk memuat data dari Google Sheets
+async function loadBankData() {
+    try {
+        // Menggunakan Google Sheets API v4
+        const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=YOUR_API_KEY`);
         
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 70,
-                behavior: 'smooth'
-            });
-            
-            // Close mobile menu if open
-            const navbarToggler = document.querySelector('.navbar-toggler');
-            const navbarCollapse = document.querySelector('.navbar-collapse');
-            if (navbarCollapse.classList.contains('show')) {
-                navbarToggler.click();
-            }
+        if (!response.ok) {
+            throw new Error('Gagal mengambil data');
         }
-    });
-});
-
-// Initialize AOS animation
-document.addEventListener('DOMContentLoaded', function() {
-    AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true,
-        offset: 120
-    });
-});
-
-// Form submission
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
         
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        
-        // Simulate loading
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...';
-        submitBtn.disabled = true;
-        
-        // Simulate API call
-        setTimeout(function() {
-            // Show success message
-            const successAlert = document.createElement('div');
-            successAlert.className = 'alert alert-success mt-3';
-            successAlert.innerHTML = '<i class="fas fa-check-circle me-2"></i> Pesan berhasil dikirim! Saya akan segera menghubungi Anda.';
-            contactForm.appendChild(successAlert);
-            
-            // Reset form
-            contactForm.reset();
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-            
-            // Remove alert after 5 seconds
-            setTimeout(function() {
-                successAlert.remove();
-            }, 5000);
-        }, 1500);
-    });
+        const data = await response.json();
+        displayData(data.values);
+    } catch (error) {
+        console.error('Error:', error);
+        // Fallback: Jika API tidak bekerja, gunakan data statis atau alternatif lain
+        displayFallbackData();
+    }
 }
 
-// Image error handling
-document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('error', function() {
-        const placeholder = this.getAttribute('data-placeholder') || 'https://via.placeholder.com/300x200?text=Image+Not+Found';
-        this.src = placeholder;
-        this.alt = 'Placeholder Image';
-    });
-});
-
-// Download CV button functionality
-document.querySelectorAll('a[href="#contact"]').forEach(btn => {
-    if (btn.innerHTML.includes('Download CV')) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Replace with actual CV download link
-            window.location.href = 'path/to/your/cv.pdf';
-        });
+// Fungsi untuk menampilkan data ke tabel
+function displayData(rows) {
+    const tableBody = document.querySelector('#bank-data tbody');
+    
+    // Lewati header (baris pertama)
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const tr = document.createElement('tr');
+        
+        // Asumsikan struktur kolom: No, Nama Bank, Kode Bank, Alamat, Telepon
+        tr.innerHTML = `
+            <td>${row[0] || ''}</td>
+            <td>${row[1] || ''}</td>
+            <td>${row[2] || ''}</td>
+            <td>${row[3] || ''}</td>
+            <td>${row[4] || ''}</td>
+        `;
+        
+        tableBody.appendChild(tr);
     }
-});
+}
+
+// Fungsi fallback jika API tidak bekerja
+function displayFallbackData() {
+    const tableBody = document.querySelector('#bank-data tbody');
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="5" style="text-align: center; color: red;">
+                Gagal memuat data. Silakan coba lagi nanti atau hubungi administrator.
+            </td>
+        </tr>
+    `;
+}
+
+// Panggil fungsi untuk memuat data ketika halaman selesai dimuat
+document.addEventListener('DOMContentLoaded', loadBankData);
