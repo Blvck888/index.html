@@ -92,7 +92,7 @@ if (contactForm) {
             // Show success message
             const successAlert = document.createElement('div');
             successAlert.className = 'alert alert-success mt-3';
-            successAlert.innerHTML = '<i class="fas fa-check-circle me-2"></i> Pesan berhasil dikirim! Kami akan segera menghubungi Anda.';
+            successAlert.innerHTML = '<i class="fas fa-check-circle me-2"></i> Pesan berhasil dikirim! Saya akan segera menghubungi Anda.';
             contactForm.appendChild(successAlert);
             
             // Reset form
@@ -115,4 +115,15 @@ document.querySelectorAll('img').forEach(img => {
         this.src = placeholder;
         this.alt = 'Placeholder Image';
     });
+});
+
+// Download CV button functionality
+document.querySelectorAll('a[href="#contact"]').forEach(btn => {
+    if (btn.innerHTML.includes('Download CV')) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Replace with actual CV download link
+            window.location.href = 'path/to/your/cv.pdf';
+        });
+    }
 });
