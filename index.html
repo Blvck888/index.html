@@ -3,38 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data All QRIS</title>
+    <title>Database QRIS | Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Data All QRIS</h1>
-        
-        <!-- Pencarian -->
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Cari data...">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-qrcode"></i>
+                <span>QRIS Database</span>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-table"></i> Data QRIS</a></li>
+                    <li><a href="#"><i class="fas fa-chart-pie"></i> Statistik</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Pengaturan</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=3498db&color=fff" alt="User">
+                    <span>Administrator</span>
+                </div>
+            </div>
         </div>
-        
-        <!-- Loading & Error -->
-        <div id="loading">
-            <div class="spinner"></div> Memuat data QRIS...
-        </div>
-        <div id="error-message" class="error"></div>
-        
-        <!-- Tabel Data -->
-        <div class="table-container">
-            <table id="data-table">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <!-- Kolom lain akan di-generate otomatis -->
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Cari data QRIS...">
+                </div>
+                <div class="top-bar-actions">
+                    <button class="btn refresh-btn" id="refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn export-btn">
+                        <i class="fas fa-file-export"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-icon blue">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Total Data</h3>
+                        <span id="total-data">0</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Aktif</h3>
+                        <span id="active-data">0</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon orange">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Pending</h3>
+                        <span id="pending-data">0</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon red">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Tidak Aktif</h3>
+                        <span id="inactive-data">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-table-container">
+                <div class="table-header">
+                    <h2><i class="fas fa-table"></i> Data QRIS Terkini</h2>
+                    <div class="table-actions">
+                        <div class="entries-filter">
+                            <span>Show</span>
+                            <select id="entries-filter">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span>entries</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <!-- Kolom akan diisi oleh JavaScript -->
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <div class="table-info" id="table-info">
+                        Showing 0 to 0 of 0 entries
+                    </div>
+                    <div class="pagination" id="pagination">
+                        <button class="pagination-btn" disabled><i class="fas fa-angle-left"></i></button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn"><i class="fas fa-angle-right"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Memuat data QRIS...</p>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal-overlay" id="error-modal">
+        <div class="modal">
+            <div class="modal-header error">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>Error</h3>
+            </div>
+            <div class="modal-body">
+                <p id="error-message">Gagal memuat data dari spreadsheet.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn ok-btn" id="modal-ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
