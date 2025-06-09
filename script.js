@@ -1,7 +1,7 @@
 // Konfigurasi Spreadsheet Anda
 const SPREADSHEET_ID = '1zc2OY8FSfAnyGDIz1DUSjs0hYqFd4jGt0g06Bw38HSE';
-const SHEET_NAME = 'Sheet1'; // Ganti jika nama sheet berbeda
-const API_URL = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${SHEET_NAME}`;
+const SHEET_NAME = 'All QRIS'; // Nama sheet yang sesuai
+const API_URL = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
 
 document.addEventListener('DOMContentLoaded', function() {
     const loadingElement = document.getElementById('loading');
@@ -10,31 +10,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const tbody = table.querySelector('tbody');
     const thead = table.querySelector('thead tr');
 
+    loadingElement.textContent = 'Sedang memuat data dari spreadsheet...';
+
     fetch(API_URL)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`Gagal mengambil data. Status: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
             console.log('Data berhasil diambil:', data);
             
-            if (data.length === 0) {
-                loadingElement.textContent = 'Tidak ada data ditemukan';
+            if (!data || data.length === 0) {
+                loadingElement.textContent = 'Tidak ada data ditemukan di sheet "All QRIS"';
                 return;
             }
 
             loadingElement.style.display = 'none';
             
-            // Buat header tabel
-            Object.keys(data[0]).forEach(header => {
+            // Bersihkan header yang ada
+            while (thead.children.length > 1) {
+                thead.removeChild(thead.lastChild);
+            }
+
+            // Buat header tabel dari kolom pertama data
+            const headers = Object.keys(data[0]);
+            headers.forEach(header => {
                 const th = document.createElement('th');
                 th.textContent = header;
                 thead.appendChild(th);
             });
 
             // Isi data
+            tbody.innerHTML = ''; // Kosongkan dulu
             data.forEach((row, index) => {
                 const tr = document.createElement('tr');
                 
@@ -44,9 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 tr.appendChild(tdNo);
                 
                 // Data lainnya
-                Object.values(row).forEach(value => {
+                headers.forEach(header => {
                     const td = document.createElement('td');
-                    td.textContent = value || '-';
+                    td.textContent = row[header] || '-';
                     tr.appendChild(td);
                 });
                 
@@ -56,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
             loadingElement.style.display = 'none';
-            errorElement.textContent = `Gagal memuat data: ${error.message}`;
+            errorElement.textContent = `Error: ${error.message}`;
+            errorElement.innerHTML += `<br><small>Pastikan sheet "All QRIS" sudah dibagikan secara publik</small>`;
         });
 });
