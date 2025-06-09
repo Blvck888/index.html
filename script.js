@@ -1,9 +1,14 @@
 // Preloader
-window.addEventListener('load', function() {
-    document.querySelector('.preloader').style.opacity = '0';
-    setTimeout(() => {
-        document.querySelector('.preloader').style.display = 'none';
-    }, 500);
+document.addEventListener('DOMContentLoaded', function() {
+    const preloader = document.querySelector('.preloader');
+    
+    // Simulate loading delay
+    setTimeout(function() {
+        preloader.style.opacity = '0';
+        setTimeout(function() {
+            preloader.style.display = 'none';
+        }, 500);
+    }, 1000);
 });
 
 // Navbar scroll effect
@@ -63,7 +68,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 AOS.init({
     duration: 800,
     easing: 'ease-in-out',
-    once: true
+    once: true,
+    offset: 120
 });
 
 // Form submission
@@ -72,27 +78,38 @@ if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Simulate form submission
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         
+        // Simulate loading
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...';
         submitBtn.disabled = true;
         
-        setTimeout(() => {
-            submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Terkirim!';
+        // Simulate API call
+        setTimeout(function() {
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success mt-3';
+            successAlert.innerHTML = '<i class="fas fa-check-circle me-2"></i> Pesan berhasil dikirim! Kami akan segera menghubungi Anda.';
+            contactForm.appendChild(successAlert);
             
             // Reset form
-            this.reset();
+            contactForm.reset();
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
             
-            // Show success message
-            alert('Pesan Anda telah berhasil dikirim! Kami akan segera menghubungi Anda.');
-            
-            // Reset button after 3 seconds
-            setTimeout(() => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 3000);
+            // Remove alert after 5 seconds
+            setTimeout(function() {
+                successAlert.remove();
+            }, 5000);
         }, 1500);
     });
 }
+
+// Logo error fallback
+document.querySelectorAll('img[alt="Logo"]').forEach(img => {
+    img.addEventListener('error', function() {
+        this.src = 'https://via.placeholder.com/150x50?text=LOGO';
+        this.alt = 'Logo Placeholder';
+    });
+});
